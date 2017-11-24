@@ -6,6 +6,12 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
+
+/*
+ * Author: Meng Lin
+ * Answer of exercise 3
+ * */
+
 public class Exercise3 {
 
 	public static void main(String[] args) {

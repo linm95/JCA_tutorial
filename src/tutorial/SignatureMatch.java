@@ -8,6 +8,12 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 
+
+/*
+ * Author: Meng Lin
+ * Signature usage test
+ * */
+
 public class SignatureMatch {
 
 	

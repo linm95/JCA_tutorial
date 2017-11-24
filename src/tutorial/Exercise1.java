@@ -1,5 +1,10 @@
 package tutorial;
 
+/*
+ * Author: Meng Lin
+ * Answer of exercise 1
+ * */
+
 public class Exercise1 {
 
 	public static void main(String[] args) {
