@@ -21,32 +21,30 @@ import javax.crypto.spec.SecretKeySpec;
  * It has some methods to encrypt or decrypt the text
  * Use the AES cipher with GCM mode*/
 public class EncryptAndDecrypt {
-	
+
 	public static void main(String[] args) {
 		Key k1 = null, k2 = null;
 		try {
-			KeyGenerator keygen1 = KeyGenerator.getInstance("AES");
-			k1 = keygen1.generateKey();
-			
-			byte[] aesKeyData = k1.getEncoded();
-			FileOutputStream fos = new FileOutputStream("key");
-			fos.write(aesKeyData);
-			fos.close();
-			//FileInputStream fis = new FileInputStream("key");
+			//KeyGenerator keygen1 = KeyGenerator.getInstance("AES");
+			//k1 = keygen1.generateKey();
+
+			//byte[] aesKeyData = k1.getEncoded();
+			//FileOutputStream fos = new FileOutputStream("key");
+			//fos.write(aesKeyData);
+			//fos.close();
+
 			byte[] key = Files.readAllBytes(Paths.get("key"));
-			//fis.read(key);
+
 			k2 = new SecretKeySpec(key, "AES");
-			//SecretKeyFactory factory = SecretKeyFactory.getInstance("AES");
-			//k2 = factory.generateSecret(secretKey);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		String s = "This is a example of how the Cipher works";
+		//String s = "This is a example of how the Cipher works";
 		String file = "encrpted.txt";
-		encrypt(file, s, k1);
+		//encrypt(file, s, k1);
 		System.out.println(decrypt(file, k2));
 	}
-	
+
 	public static void encrypt(String filename, String text, Key k) {
 		try {
 			Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -60,7 +58,7 @@ public class EncryptAndDecrypt {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String decrypt(String filename, Key k) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
@@ -68,7 +66,7 @@ public class EncryptAndDecrypt {
 			aes.init(Cipher.DECRYPT_MODE, k);
 			FileInputStream fis = new FileInputStream(filename);
 			CipherInputStream in = new CipherInputStream(fis, aes);
-			
+
 			byte[] b = new byte[1024];
 			int numOfByteRead;
 			while((numOfByteRead = in.read(b)) >= 0) {
