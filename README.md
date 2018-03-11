@@ -19,9 +19,9 @@ In this tutorial, we will use the default provider of JDK as examples.
 
 ## III. Engine Classes and Algorithms
 An engine class provides the interface to a specific type of cryptographic service, independent of a particular cryptographic algorithm or provider. The engines either provide:
-cryptographic operations (encryption, digital signatures, message digests, etc.),
-generators or converters of cryptographic material (keys and algorithm parameters), or
-objects (keystores or certificates) that encapsulate the cryptographic data and can be used at higher layers of abstraction.
+  * cryptographic operations (encryption, digital signatures, message digests, etc.),
+  * generators or converters of cryptographic material (keys and algorithm parameters), or
+  * objects (keystores or certificates) that encapsulate the cryptographic data and can be used at higher layers of abstraction.
 Main Functions
 ### 1. MessageDigest
 #### 1.1 Introduction
