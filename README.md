@@ -31,7 +31,9 @@ In JCA, MessageDigest class provide method to encrypt the message to a hashcode 
 
 First, let’s create a instance of MessageDigest:
 MessageDigest md = MessageDigest.getInstance("SHA");
-
+'''java
+MessageDigest md = MessageDigest.getInstance("SHA");
+'''
 This will create a instance of MessageDigest using the algorithm of “SHA”, which is “SHA-256”.
 You can also use:
 MessageDigest md = MessageDigest.getInstance("SHA-256");
