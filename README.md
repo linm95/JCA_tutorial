@@ -36,22 +36,30 @@ MessageDigest md = MessageDigest.getInstance("SHA");
 ```
 This will create a instance of MessageDigest using the algorithm of “SHA”, which is “SHA-256”.
 You can also use:
+``` java
 MessageDigest md = MessageDigest.getInstance("SHA-256");
+```
 To create one.
+``` java
 Byte[] hash = md.digest("password".getByte());
+```
 This method will transform the string “password” to its corresponding 256-bit hash.
 Or if you have multiple text and you want to hash them all, you can use the update() method.
 Supposing we have b1, b2 and b3 three byte arrays;
+``` java
 md.update(b1);
 md.update(b2);
 md.update(b3);
 Byte[] hash = md.digest(); //info of b1, b2, b3 will be lost
+```
 Notice that every time you call digest() method, all the data you update before will be lost. If you want to keep the former data, you can use the clone() method.
+``` java
 md.update(b1);
 md.update(b2);
 Byte[] hash = md.clone().digest(); // info of b1, b2 will be kept
 md.update(b3);
 Byte[] hash = md.digest(); //info of b1, b2, b3 will be lost
+```
 
 #### 1.3 Exercise 1
 Use the MessageDigest class to convert two Strings passwordInFile, passwordEntered to their corresponding 256 bit hash. And then compare the hash, if they are equal, print out “password match”, else, print out “wrong password”.
@@ -70,22 +78,29 @@ An opaque key representation is one in which you have no direct access to the ke
 #### 2.2 KeyGenerator
 A key generator is used to generate secret keys for symmetric algorithms.
 For example, we can get a instance of KeyGenerator by calling this:
+``` java
 KeyGenerator keygen = KeyGenerator.getInstance("AES"); 
 // Use "AES" algorithm
 Key k = keygen.generateKey(); // generate the key
+```
 This will generate a secrete key which can be used in the “AES” encryption method.
 #### 2.3 SecretKeySpec
 Sometimes we need to transfer the key we generated to others, so that others can use the key to decrypt ciphertext we generate. And this class can help us generate the key from specific byte array.
 First, we should get the content of the encoded key.
+``` java
 byte[] aesKeyData = k.getEncoded();
+```
 This method will convert a key to the byte array format.
 Next, we use the SecretKeySpec class to restore the key.
+``` java
 k2 = new SecretKeySpec(aesKeyData, "AES");
+```
 You should notice that the encryption method should be the same or you will get the wrong key.
 #### 2.4 KeyFactory
 KeyFactory is used to get the generated public key and private key from encoded keys or key specifications. Public/private key is different from secret key, they are used in the digital signature verifying. 
 The usage of key factory is as below:
 First, let’s see how to generate the keys from encoded key.
+``` java
 X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(encodedPubKey);
 //generate the corresponding public key specification object
 
@@ -93,8 +108,10 @@ KeyFactory keyFactory = KeyFactory.getInstance("DSA");//use DSA algorithm
 
 PublicKey pubKey = keyFactory.generatePublic(pubKeySpec); 
 // get the corresponding public key.
+```
 
 Next, let’s see how to generate keys from key’s specifications:
+``` java
 DSAPrivateKeySpec dsaPrivKeySpec = new DSAPrivateKeySpec(x, p, q, g);
 //Indicate the value of specified parameters
 
@@ -103,7 +120,7 @@ KeyFactory keyFactory = KeyFactory.getInstance("DSA");
 
 PrivateKey privKey = keyFactory.generatePrivate(dsaPrivKeySpec);
 //generate private key
-
+```
 ### 3. Cipher
 #### 3.1 Introduction
 Although SHA is good algorithm that can provide pretty good encrypt, it is a one-way encryption, which means we cannot get the decode the secret text and get the original message. This is not we want in some cases such as message delivery.
@@ -115,23 +132,33 @@ First, we create a Cipher instance:
 Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
 This indicate that we want use the AES algorithm with ECB mode and PKCS5Padding scheme. Of course you can use other encryption algorithm but in this example we will use the AES method.
 Then we need to generate some Key used to encrypt:
+``` java
 KeyGenerator keygen = KeyGenerator.getInstance("AES"); 
 // Use “AES” algorithm
 Key k = keygen.generateKey(); // generate the key
+```
 Then let’s encrypt some message, so choose the encryption mode:
+``` java
 aes.init(Cipher.ENCRYPT_MODE, k);
+```
 Now we can encrypt some message like this:
+``` java
 String message = "This is an example of how the Cipher works";
 Byte[] ciphertext = aes.doFinal(message.getByte());
+```
 The byte array ciphertext is the encrypted message.
 Also just like in MessageDigest, if you have multiple scripts of message to encrypt, you can use the update() method:
+``` java
 aes.update("This is an ".getByte());
 aes.update("example of ".getByte());
 aes.update("how the Cipher works".getByte());
 Byte[] ciphertext = aes.doFinal();
+```
 Then we can taking the same key used in encryption to work out the cleartext like this:
+``` java
 aes.init(Cipher.DECRYPT_MODE, k);
 Byte[] cleartext = aes.doFinal(ciphertext);
+```
 Then just convert the byte array to char array and you can get the original message.
 #### 3.3 Exercise 2
 Now I have a key’s encoded content file key and a ciphertext. The encryption algorithm is AES. Write a program to decrypt the ciphertext and see what the cleartext is.
@@ -149,29 +176,33 @@ A Signature object is initialized for signing with a Private Key and is given th
 Let’s try a simple case of generating and verifying a Signature Using Generated Keys.
 ##### 4.2.1. Generating a public-private key pair
 Firstly, we will generate a public-private key pair for the algorithm named "DSA" (Digital Signature Algorithm).
-
+``` java
 KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA"); //get a key pair generator object
 
 keyGen.initialize(2048);  //generate keys with a keysize of 2048
 
 KeyPair pair = keyGen.generateKeyPair(); //generate the key pair
-
+```
 Now, the public-private key pair is generated and let’s go back to the signature generation and verification example.
 ##### 4.2.2. Generating a Signature
 
+``` java
 Signature dsa = Signature.getInstance("SHA256withDSA"); //create a signature object
 String data = "This is an example";
 PrivateKey priv = pair.getPrivate(); 
 dsa.initSign(priv);  //Initializing the object with a private key
 dsa.update(data);
 byte[] sig = dsa.sign();   //update and sign a byte array called data
+```
 
 ##### 4.2.3. Verifying a Signature
+``` java
 PublicKey pub = pair.getPublic();
 dsa.initVerify(pub);  //Initializing the object with the public key
 dsa.update(data); //update the data
 boolean verifies = dsa.verify(sig);
 System.out.println("signature verifies: " + verifies);  // verify the data 
+```
 
 #### 4.3 Exercise 3
 Now I have three public key(encoded) publickey0, publickey1, publickey2, three signatures sig0, sig1, sig2 and three data files data0, data1, data2. Write a program to decide which key, sig and data belongs to the same group. The key and signature use “DSA” algorithm.
