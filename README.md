@@ -1,6 +1,8 @@
 # JCA_tutorial
 Java Cryptography Architecture (JCA) Tutorial
-Meng Lin, Wenting Song
+
+Meng Lin
+
 ## I. Introduction
 The Java platform strongly emphasizes security, including language safety, cryptography, public key infrastructure, authentication, secure communication, and access control.
 
